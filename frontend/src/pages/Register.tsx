@@ -1,16 +1,12 @@
 import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
-
-interface IFormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { RootState } from "../app/store";
+import { FormData } from "../utils/FormData.model";
 
 function Register() {
-  const [formData, setFormData] = useState<IFormData>({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
@@ -18,6 +14,10 @@ function Register() {
   });
 
   const { name, email, password, confirmPassword } = formData;
+
+  const dispatch = useDispatch();
+
+  const {} = useSelector((state: RootState) => state.auth);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
