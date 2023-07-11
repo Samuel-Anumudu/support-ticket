@@ -1,9 +1,11 @@
-import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../app/store";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { RootState } from "../app/store";
 import { FormData } from "../utils/FormData.model";
+import { register, reset } from "../features/auth/authSlice";
 
 function Register() {
   const [formData, setFormData] = useState<FormData>({
@@ -15,9 +17,24 @@ function Register() {
 
   const { name, email, password, confirmPassword } = formData;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const {} = useSelector((state: RootState) => state.auth);
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
@@ -31,6 +48,14 @@ function Register() {
 
     if (password !== confirmPassword) {
       toast.error("passwords do not match");
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+
+      dispatch(register(userData));
     }
   };
   return (
