@@ -1,8 +1,9 @@
 import axios from "axios";
-import { RegisterUser } from "../../utils/User.Model";
+import { RegisterUser, LoginUser } from "../../utils/User.Model";
 
-const API_URL = "/api/users";
+const API_URL = "/api/users/";
 
+// Register User
 const register = async (userData: RegisterUser) => {
   const res = await axios.post(API_URL, userData);
 
@@ -13,6 +14,21 @@ const register = async (userData: RegisterUser) => {
   return res.data;
 };
 
-const authService = { register };
+// Login User
+const login = async (userData: LoginUser) => {
+  const res = await axios.post(API_URL + "login", userData);
+
+  if (res.data) {
+    localStorage.setItem("user", JSON.stringify(res.data));
+  }
+
+  return res.data;
+};
+
+const logout = async () => {
+  localStorage.removeItem("user");
+};
+
+const authService = { register, login, logout };
 
 export default authService;

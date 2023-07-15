@@ -29,9 +29,19 @@ export const register = createAsyncThunk(
 export const login = createAsyncThunk(
   "auth/login",
   async (user: LoginUser, thunkAPI) => {
-    console.log(user);
+    try {
+      return await authService.login(user);
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || error.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
   }
 );
+
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await authService.logout();
+});
 
 export const authSlice = createSlice({
   name: "auth",
@@ -51,12 +61,32 @@ export const authSlice = createSlice({
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
-      state.user = action.payload;
+      // I only want to have user  logged in before user is stored in state
+      // state.user = action.payload;
     });
     builder.addCase(register.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload as string;
+      state.user = null;
+    });
+
+    builder.addCase(login.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.user = action.payload;
+    });
+    builder.addCase(login.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload as string;
+      state.user = null;
+    });
+
+    builder.addCase(logout.fulfilled, (state) => {
       state.user = null;
     });
   },

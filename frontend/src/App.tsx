@@ -1,11 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Header from "./components/Header";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -14,7 +19,9 @@ function App() {
         <div className="container">
           <Header />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="/" element={<Home />} />
+            </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>

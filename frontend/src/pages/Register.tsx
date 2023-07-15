@@ -6,6 +6,7 @@ import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { FormData } from "../utils/FormData.model";
 import { register, reset } from "../features/auth/authSlice";
+import Spinner from "../components/Spinner";
 
 function Register() {
   const [formData, setFormData] = useState<FormData>({
@@ -30,7 +31,7 @@ function Register() {
     }
 
     if (isSuccess || user) {
-      navigate("/");
+      navigate("/login");
     }
 
     dispatch(reset());
@@ -57,7 +58,11 @@ function Register() {
 
       dispatch(register(userData));
     }
+    toast.success("Registration complete! Login now.");
   };
+
+  if (isLoading) return <Spinner />;
+
   return (
     <>
       <section className="heading">

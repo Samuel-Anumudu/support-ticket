@@ -1,9 +1,11 @@
-import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { RootState, useAppDispatch } from "../app/store";
 import { useSelector } from "react-redux";
-import { login } from "../features/auth/authSlice";
+import { login, reset } from "../features/auth/authSlice";
+import Spinner from "../components/Spinner";
 
 interface IFormData {
   email: string;
@@ -18,10 +20,23 @@ function Login() {
 
   const { email, password } = formData;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const { user, isLoading, isSuccess, message } = useSelector(
+  const { user, isLoading, isSuccess, isError, message } = useSelector(
     (state: RootState) => state.auth
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
@@ -36,7 +51,12 @@ function Login() {
     const userData = { email, password };
 
     dispatch(login(userData));
+
+    toast.success("Login successful!");
   };
+
+  if (isLoading) return <Spinner />;
+
   return (
     <>
       <section className="heading">
