@@ -6,6 +6,8 @@ import { RootState, useAppDispatch } from "../app/store";
 import { useSelector } from "react-redux";
 import { login, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
+import Button from "../components/ui/Button";
+import TextInput from "../components/formFields/TextInput";
 
 interface IFormData {
   email: string;
@@ -51,8 +53,6 @@ function Login() {
     const userData = { email, password };
 
     dispatch(login(userData));
-
-    toast.success("Login successful!");
   };
 
   if (isLoading) return <Spinner />;
@@ -68,31 +68,31 @@ function Login() {
       <section className="form">
         <form onSubmit={onSubmit}>
           <div className="form-group">
-            <input
+            <TextInput
               type="email"
               className="form-control"
               id="email"
               name="email"
-              value={email}
+              textValue={email}
               onChange={onChange}
               placeholder="Enter your email"
               required
             />
           </div>
           <div className="form-group">
-            <input
+            <TextInput
               type="password"
               className="form-control"
               id="password"
               name="password"
-              value={password}
+              textValue={password}
               onChange={onChange}
               placeholder="Enter password"
               required
             />
           </div>
           <div className="form-group">
-            <button className="btn btn-block">Submit</button>
+            <Button className="btn btn-block" text="Submit" />
           </div>
         </form>
       </section>

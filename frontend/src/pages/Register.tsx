@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { FormData } from "../utils/FormData.model";
 import { register, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
+import TextInput from "../components/formFields/TextInput";
+import Button from "../components/ui/Button";
 
 function Register() {
   const [formData, setFormData] = useState<FormData>({
@@ -74,55 +76,55 @@ function Register() {
       <section className="form">
         <form onSubmit={onSubmit}>
           <div className="form-group">
-            <input
+            <TextInput
               type="text"
               className="form-control"
               id="name"
               name="name"
-              value={name}
+              textValue={name}
               onChange={onChange}
               placeholder="Enter your name"
               required
             />
           </div>
           <div className="form-group">
-            <input
+            <TextInput
               type="email"
               className="form-control"
               id="email"
               name="email"
-              value={email}
+              textValue={email}
               onChange={onChange}
               placeholder="Enter your email"
               required
             />
           </div>
           <div className="form-group">
-            <input
+            <TextInput
               type="password"
               className="form-control"
               id="password"
               name="password"
-              value={password}
+              textValue={password}
               onChange={onChange}
               placeholder="Enter password"
               required
             />
           </div>
           <div className="form-group">
-            <input
+            <TextInput
               type="password"
               className="form-control"
               id="confirmPassword"
               name="confirmPassword"
-              value={confirmPassword}
+              textValue={confirmPassword}
               onChange={onChange}
               placeholder="Confirm password"
               required
             />
           </div>
           <div className="form-group">
-            <button className="btn btn-block">Submit</button>
+            <Button text="Submit" className="btn btn-block" />
           </div>
         </form>
       </section>
