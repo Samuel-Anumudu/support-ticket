@@ -1,7 +1,7 @@
 import { RequestHandler, Request } from "express";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
-import UserModel from "../models/userModel";
+import User from "../models/userModel";
 import { generateToken } from "../utils/generateToken";
 import { JwtPayload } from "jsonwebtoken";
 
@@ -17,7 +17,7 @@ export const registerUser: RequestHandler = asyncHandler(async (req, res) => {
     throw new Error("Bad credentials! Please include all fields.");
   }
 
-  const userExists = await UserModel.findOne({ email });
+  const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
     throw new Error("User already exists");
@@ -28,7 +28,7 @@ export const registerUser: RequestHandler = asyncHandler(async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   // Create User
-  const user = await UserModel.create({
+  const user = await User.create({
     name,
     email,
     password: hashedPassword,
@@ -50,7 +50,7 @@ export const registerUser: RequestHandler = asyncHandler(async (req, res) => {
 export const loginUser: RequestHandler = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await UserModel.findOne({ email });
+  const user = await User.findOne({ email });
   // Check user and password match
   if (user && (await bcrypt.compare(password, user.password!))) {
     res.status(200).json({
