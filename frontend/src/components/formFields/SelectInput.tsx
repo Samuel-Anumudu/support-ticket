@@ -1,4 +1,4 @@
-type SelectProps = {
+type SelectInputProps = {
   id: string;
   name: string;
   selectValue: string | number | undefined;
@@ -16,7 +16,7 @@ function SelectInput({
   id,
   onChange,
   selectValue,
-}: SelectProps) {
+}: SelectInputProps) {
   return (
     <select name={name} id={id} value={selectValue} onChange={onChange}>
       {options.map((option) => (

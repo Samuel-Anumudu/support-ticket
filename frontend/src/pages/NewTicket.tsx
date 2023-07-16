@@ -1,10 +1,16 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useAppDispatch } from "../app/store";
 import { RootState } from "../app/store";
+import { INewTicket } from "../utils/NewTicket.model";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { createTicket, reset } from "../features/tickets/ticketSlice";
 import SelectInput from "../components/formFields/SelectInput";
 import TextArea from "../components/formFields/TextArea";
-import { INewTicket } from "../utils/NewTicket.model";
 import Button from "../components/ui/Button";
+import BackButton from "../components/ui/BackButton";
+import Spinner from "../components/Spinner";
 
 const productOptions = [
   { text: "Select a product", value: "", disabled: true },
@@ -15,9 +21,12 @@ const productOptions = [
 ];
 
 function NewTicket() {
-  const { user } = useSelector((state: RootState) => state.auth) as {
-    user: INewTicket | null;
-  };
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const { isError, isLoading, isSuccess, message } = useSelector(
+    (state: RootState) => state.ticket
+  );
+
   const [newTicket, setNewTicket] = useState<INewTicket>({
     name: user?.name,
     email: user?.email,
@@ -26,6 +35,9 @@ function NewTicket() {
   } as INewTicket);
 
   const { name, email, product, description } = newTicket;
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLTextAreaElement>
@@ -36,13 +48,29 @@ function NewTicket() {
     }));
   };
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      dispatch(reset());
+      navigate("/tickets");
+    }
+
+    dispatch(reset());
+  }, [isError, message, isSuccess, dispatch, navigate]);
+
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    return {};
+    dispatch(createTicket({ product, description }));
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
+      <BackButton url="/" />
       <section className="heading">
         <h1>Create New Ticket</h1>
         <p>Please fill out the form below</p>

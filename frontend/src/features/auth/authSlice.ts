@@ -6,13 +6,14 @@ import authService from "./authService";
 const user = JSON.parse(localStorage.getItem("user")!);
 
 const initialState: AuthState = {
-  user: user ? user : null,
+  user: user,
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
 
+// Register new user
 export const register = createAsyncThunk(
   "auth/register",
   async (user: RegisterUser, thunkAPI) => {
@@ -26,6 +27,7 @@ export const register = createAsyncThunk(
   }
 );
 
+// Login user
 export const login = createAsyncThunk(
   "auth/login",
   async (user: LoginUser, thunkAPI) => {
