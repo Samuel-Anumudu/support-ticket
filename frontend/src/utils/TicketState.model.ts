@@ -1,6 +1,7 @@
+import { Ticket } from "./Ticket.model";
 export interface TicketState {
-  tickets: [];
-  ticket: {};
+  tickets: Ticket[];
+  ticket: Ticket;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;

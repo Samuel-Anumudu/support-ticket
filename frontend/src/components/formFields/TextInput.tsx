@@ -2,7 +2,7 @@ type TextInputProps = {
   type: string;
   id: string;
   name: string;
-  textValue: string;
+  value: string;
   placeholder: string;
   required?: boolean;
   className?: string;
@@ -12,7 +12,7 @@ function TextInput({
   type,
   id,
   name,
-  textValue,
+  value,
   placeholder,
   required,
   className,
@@ -23,7 +23,7 @@ function TextInput({
       type={type}
       id={id}
       name={name}
-      value={textValue}
+      value={value}
       placeholder={placeholder}
       onChange={onChange}
       required={required}

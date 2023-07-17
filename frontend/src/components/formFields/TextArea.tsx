@@ -1,23 +1,17 @@
 type TextAreaProps = {
   id: string;
   name: string;
-  textAreaValue: string | undefined;
+  value: string | undefined;
   placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-function TextArea({
-  name,
-  id,
-  onChange,
-  textAreaValue,
-  placeholder,
-}: TextAreaProps) {
+function TextArea({ name, id, onChange, value, placeholder }: TextAreaProps) {
   return (
     <textarea
       name={name}
       id={id}
-      value={textAreaValue}
+      value={value}
       placeholder={placeholder}
       onChange={onChange}
     ></textarea>

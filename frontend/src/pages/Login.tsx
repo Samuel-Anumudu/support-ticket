@@ -74,7 +74,7 @@ function Login() {
               className="form-control"
               id="email"
               name="email"
-              textValue={email}
+              value={email}
               onChange={onChange}
               placeholder="Enter your email"
               required
@@ -86,7 +86,7 @@ function Login() {
               className="form-control"
               id="password"
               name="password"
-              textValue={password}
+              value={password}
               onChange={onChange}
               placeholder="Enter password"
               required

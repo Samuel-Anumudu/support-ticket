@@ -1,8 +1,7 @@
-import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../app/store";
 import { RootState } from "../app/store";
-import { INewTicket } from "../utils/NewTicket.model";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createTicket, reset } from "../features/tickets/ticketSlice";
@@ -22,31 +21,17 @@ const productOptions = [
 
 function NewTicket() {
   const { user } = useSelector((state: RootState) => state.auth);
+  const [name] = useState(user?.name);
+  const [email] = useState(user?.email);
+  const [product, setProduct] = useState("");
+  const [description, setDescription] = useState("");
 
   const { isError, isLoading, isSuccess, message } = useSelector(
-    (state: RootState) => state.ticket
+    (state: RootState) => state.tickets
   );
-
-  const [newTicket, setNewTicket] = useState<INewTicket>({
-    name: user?.name,
-    email: user?.email,
-    product: "",
-    description: "",
-  } as INewTicket);
-
-  const { name, email, product, description } = newTicket;
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const onChange = (
-    e: ChangeEvent<HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    setNewTicket((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   useEffect(() => {
     if (isError) {
@@ -55,11 +40,19 @@ function NewTicket() {
 
     if (isSuccess) {
       dispatch(reset());
-      navigate("/tickets");
     }
 
     dispatch(reset());
   }, [isError, message, isSuccess, dispatch, navigate]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(reset());
+      setProduct("");
+      setDescription("");
+      navigate("/tickets");
+    }
+  }, [isSuccess, dispatch, navigate]);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -92,9 +85,9 @@ function NewTicket() {
             <SelectInput
               name="product"
               id="product"
-              selectValue={product}
+              value={product}
               options={productOptions}
-              onChange={onChange}
+              onChange={(e) => setProduct(e.target.value)}
             />
           </div>
           <div className="form-group">
@@ -103,8 +96,8 @@ function NewTicket() {
               name="description"
               id="description"
               placeholder="Description"
-              textAreaValue={description}
-              onChange={onChange}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 

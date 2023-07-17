@@ -1,7 +1,7 @@
 type SelectInputProps = {
   id: string;
   name: string;
-  selectValue: string | number | undefined;
+  value: string | number | undefined;
   options: {
     text: string;
     value: string | number | readonly string[] | undefined;
@@ -10,15 +10,9 @@ type SelectInputProps = {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-function SelectInput({
-  options,
-  name,
-  id,
-  onChange,
-  selectValue,
-}: SelectInputProps) {
+function SelectInput({ options, name, id, onChange, value }: SelectInputProps) {
   return (
-    <select name={name} id={id} value={selectValue} onChange={onChange}>
+    <select name={name} id={id} value={value} onChange={onChange}>
       {options.map((option) => (
         <option
           key={option.text}

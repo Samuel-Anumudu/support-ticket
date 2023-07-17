@@ -81,7 +81,7 @@ function Register() {
               className="form-control"
               id="name"
               name="name"
-              textValue={name}
+              value={name}
               onChange={onChange}
               placeholder="Enter your name"
               required
@@ -93,7 +93,7 @@ function Register() {
               className="form-control"
               id="email"
               name="email"
-              textValue={email}
+              value={email}
               onChange={onChange}
               placeholder="Enter your email"
               required
@@ -105,7 +105,7 @@ function Register() {
               className="form-control"
               id="password"
               name="password"
-              textValue={password}
+              value={password}
               onChange={onChange}
               placeholder="Enter password"
               required
@@ -117,7 +117,7 @@ function Register() {
               className="form-control"
               id="confirmPassword"
               name="confirmPassword"
-              textValue={confirmPassword}
+              value={confirmPassword}
               onChange={onChange}
               placeholder="Confirm password"
               required
