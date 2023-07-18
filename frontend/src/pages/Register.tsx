@@ -51,6 +51,7 @@ function Register() {
 
     if (password !== confirmPassword) {
       toast.error("passwords do not match");
+      return;
     } else {
       const userData = {
         name,

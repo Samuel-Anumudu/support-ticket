@@ -1,5 +1,6 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware";
+import noteRouter from "../routes/noteRoutes";
 import {
   getTickets,
   getTicket,
@@ -9,6 +10,9 @@ import {
 } from "../controllers/ticketController";
 
 const router = express.Router();
+
+// Re-route into note router
+router.use("/:ticketId/notes", noteRouter);
 
 router.route("/").get(protect, getTickets).post(protect, createTicket);
 
