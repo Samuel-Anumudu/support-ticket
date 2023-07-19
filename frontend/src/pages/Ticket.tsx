@@ -1,7 +1,11 @@
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../app/store";
 import { getTicket, reset, closeTicket } from "../features/tickets/ticketSlice";
-import { getNotes, reset as notesReset } from "../features/notes/noteSlice";
+import {
+  getNotes,
+  createNote,
+  reset as notesReset,
+} from "../features/notes/noteSlice";
 import { useParams, useNavigate } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -71,7 +75,9 @@ function Ticket() {
 
   const onNoteSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log("submit");
+    if (ticketId) {
+      dispatch(createNote({ noteText, ticketId }));
+    }
     closeModal();
   };
 
