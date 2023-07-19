@@ -4,10 +4,10 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "server": "nodemon src/server.ts",
-    "client": "npm start --prefix ../frontend",
+    "start": "node ./backend/dist/server.js",
+    "server": "nodemon --watch backend/src --exec ts-node ./backend/src/server.ts",
+    "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
