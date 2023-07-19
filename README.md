@@ -48,7 +48,7 @@ npm start
 
 ### Compile and Hot-Reload for Development
 
-In the Backend folder, run both server and client
+In the root, run both server and client
 
 ```sh
 npm run dev
