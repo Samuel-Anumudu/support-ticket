@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import colors from "colors";
 import "dotenv/config";
 
@@ -24,8 +25,17 @@ app.use("/api/tickets", ticketRoutes);
 
 app.use(errorHandler);
 
-app.get("/", (req, res) => {
-  res.send("Hello, Welcome to Support Ticket App!");
-});
+// Serve Frontend (Production/Deployment)
+if (process.env.NODE_ENV === "production") {
+  // Set Frontend Build Folder as Static
+  app.use(express.static(path.join(__dirname, "./frontend/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.join(__dirname, "./frontend/build/index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("Hello, Welcome to Support Ticket App!");
+  });
+}
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
